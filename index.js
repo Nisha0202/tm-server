@@ -33,8 +33,6 @@ async function run() {
   }
 }
 
-
-
 //form things- 
 async function run() {
 
@@ -42,11 +40,10 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
 
-        const coffeeCollection = client.db('coffeeDB').collection('coffee');
-        const userCollection = client.db('coffeeDB').collection('user');
+        const touristSpotsCollection = client.db('touristSpot').collection('spots');
 
         app.get('/touristspots', async (req, res) => {
-            const cursor = coffeeCollection.find();
+            const cursor = touristSpotsCollection.find();
             const result = await cursor.toArray();
             res.send(result);
         })
@@ -54,45 +51,18 @@ async function run() {
         app.get('/touristspots/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) }
-            const result = await coffeeCollection.findOne(query);
+            const result = await touristSpotsCollection.findOne(query);
             res.send(result);
         })
 
         app.post('/touristspots', async (req, res) => {
-            const newCoffee = req.body;
-            console.log(newCoffee);
-            const result = await coffeeCollection.insertOne(newCoffee);
+            const formData= req.body;
+            console.log(formData);
+            const result = await touristSpotsCollection.insertOne(formData);
             res.send(result);
         })
 
-        app.put('/touristspots/:id', async (req, res) => {
-            const id = req.params.id;
-            const filter = { _id: new ObjectId(id) }
-            const options = { upsert: true };
-            const updatedCoffee = req.body;
-
-            const coffee = {
-                $set: {
-                    name: updatedCoffee.name,
-                    quantity: updatedCoffee.quantity,
-                    supplier: updatedCoffee.supplier,
-                    taste: updatedCoffee.taste,
-                    category: updatedCoffee.category,
-                    details: updatedCoffee.details,
-                    photo: updatedCoffee.photo
-                }
-            }
-
-            const result = await coffeeCollection.updateOne(filter, coffee, options);
-            res.send(result);
-        })
-
-        app.delete('/touristspots/:id', async (req, res) => {
-            const id = req.params.id;
-            const query = { _id: new ObjectId(id) }
-            const result = await coffeeCollection.deleteOne(query);
-            res.send(result);
-        })
+    
 
 
         // Send a ping to confirm a successful connection
@@ -105,31 +75,6 @@ async function run() {
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 run().catch(console.dir);
 
 app.get('/', (req, res) =>{
@@ -139,3 +84,31 @@ app.get('/', (req, res) =>{
 app.listen(port, ()=>{
     console.log(`Port:${port}`)
 })
+    // app.put('/touristspots/:id', async (req, res) => {
+        //     const id = req.params.id;
+        //     const filter = { _id: new ObjectId(id) }
+        //     const options = { upsert: true };
+        //     const updatedCoffee = req.body;
+
+        //     const coffee = {
+        //         $set: {
+        //             name: updatedCoffee.name,
+        //             quantity: updatedCoffee.quantity,
+        //             supplier: updatedCoffee.supplier,
+        //             taste: updatedCoffee.taste,
+        //             category: updatedCoffee.category,
+        //             details: updatedCoffee.details,
+        //             photo: updatedCoffee.photo
+        //         }
+        //     }
+
+        //     const result = await touristSpotsCollection.updateOne(filter, coffee, options);
+        //     res.send(result);
+        // })
+
+        // app.delete('/touristspots/:id', async (req, res) => {
+        //     const id = req.params.id;
+        //     const query = { _id: new ObjectId(id) }
+        //     const result = await touristSpotsCollection.deleteOne(query);
+        //     res.send(result);
+        // })
