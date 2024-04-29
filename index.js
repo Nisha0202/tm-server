@@ -40,7 +40,7 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
 
-        const touristSpotsCollection = client.db('touristSpot').collection('spots');
+        const touristSpotsCollection = client.db('test').collection('spots');
 
         app.get('/touristspots', async (req, res) => {
             const cursor = touristSpotsCollection.find();
@@ -112,3 +112,5 @@ app.listen(port, ()=>{
         //     const result = await touristSpotsCollection.deleteOne(query);
         //     res.send(result);
         // })
+
+        // mongoimport --uri "mongodb+srv://Admin:Admin0202@cluster0.5cua0xk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0" --collection spots --file "C:/Users/NISHA/Downloads/spots.json" --jsonArray
