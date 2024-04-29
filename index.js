@@ -54,6 +54,13 @@ async function run() {
             const result = await touristSpotsCollection.findOne(query);
             res.send(result);
         })
+        // get detsils
+        // app.get('/touristspots/:id', async (req, res) => {
+        //   const { id } = req.params;
+        //   const spot = await touristSpotsCollection.findOne({ _id: id });
+        //   res.send(spot);
+        // });
+        
 
         app.post('/touristspots', async (req, res) => {
             const formData= req.body;
@@ -62,6 +69,23 @@ async function run() {
             res.send(result);
         })
 
+
+
+        //show countries
+        const countryCollection = client.db('test').collection('countries');
+
+        app.get('/countries', async (req, res) => {
+            const cursor = countryCollection.find();
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+
+        app.post('/countries', async (req, res) => {
+          const formData= req.body;
+          console.log(formData);
+          const result = await countryCollection.insertOne(formData);
+          res.send(result);
+      })
     
 
 
@@ -113,4 +137,5 @@ app.listen(port, ()=>{
         //     res.send(result);
         // })
 
-        // mongoimport --uri "mongodb+srv://Admin:Admin0202@cluster0.5cua0xk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0" --collection spots --file "C:/Users/NISHA/Downloads/spots.json" --jsonArray
+        // mongoimport --uri "mongodb+srv://Admin:Admin0202@cluster0.5cua0xk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0" --collection countries --file "C:/Users/NISHA/Downloads/countries.json" --jsonArray
+        // C:/Users/NISHA/Downloads/countries.json
