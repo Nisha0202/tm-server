@@ -36,14 +36,14 @@ async function run() {
             res.send(result);
         })
 
-        app.get('/touristspots/:id', async (req, res) => {
-            const id = req.params.id;
-            console.log(id);
-            const query = { _id: new ObjectId(id)  }
-            const result = await touristSpotsCollection.findOne(query);
-            res.send(result);
-            console.log(result);
-        })
+        // app.get('/touristspots/:id', async (req, res) => {
+        //     const id = req.params.id;
+        //     console.log(id);
+        //     const query = { _id: new ObjectId(id)  }
+        //     const result = await touristSpotsCollection.findOne(query);
+        //     res.send(result);
+        //     console.log(result);
+        // })
 
         //add list
         app.post('/touristspots', async (req, res) => {
@@ -56,11 +56,50 @@ async function run() {
         // delete
            app.delete('/touristspots/:id', async (req, res) => {
             const id = req.params.id;
-            console.log("id");
             const query = { _id: new ObjectId(id)}
             const result = await touristSpotsCollection.deleteOne(query);
             res.send(result);
         })
+
+
+        // update
+        app.get('/touristspots/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log(id);
+            const query = { _id: new ObjectId(id)  }
+            const result = await touristSpotsCollection.findOne(query);
+            res.send(result);
+        })
+
+        app.put('/touristspots/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) }
+            const options = { upsert: true };
+            const spots = req.body;
+
+            const data = {
+                $set: {
+                    image_url: spots.image_url,
+                    tourists_spot_name: spots.tourists_spot_name,
+                    country_name: spots.country_name,
+                    location: spots.location,
+                    short_description: spots.short_description,
+                    average_cost: spots.average_cost,
+                    seasonality: spots.seasonality,
+                    travel_time: spots.travel_time,
+                    total_visitors_per_year: spots.total_visitors_per_year,
+                    user_name: spots.displayName, 
+                    user_email: spots.email,
+                }
+            }
+
+            const result = await touristSpotsCollection.updateOne(filter, data, options);
+            res.send(result);
+        })
+
+
+
+
 
         //show countries
         const countryCollection = client.db('test').collection('countries');
@@ -100,35 +139,6 @@ app.listen(port, ()=>{
     console.log(`Port:${port}`)
 })
 
-
-    // app.put('/touristspots/:id', async (req, res) => {
-        //     const id = req.params.id;
-        //     const filter = { _id: new ObjectId(id) }
-        //     const options = { upsert: true };
-        //     const updatedCoffee = req.body;
-
-        //     const coffee = {
-        //         $set: {
-        //             name: updatedCoffee.name,
-        //             quantity: updatedCoffee.quantity,
-        //             supplier: updatedCoffee.supplier,
-        //             taste: updatedCoffee.taste,
-        //             category: updatedCoffee.category,
-        //             details: updatedCoffee.details,
-        //             photo: updatedCoffee.photo
-        //         }
-        //     }
-
-        //     const result = await touristSpotsCollection.updateOne(filter, coffee, options);
-        //     res.send(result);
-        // })
-
-        // app.delete('/touristspots/:id', async (req, res) => {
-        //     const id = req.params.id;
-        //     const query = { _id: new ObjectId(id) }
-        //     const result = await touristSpotsCollection.deleteOne(query);
-        //     res.send(result);
-        // })
 
        //mylist
 //         app.get("/touristspots/:email", async (req, res) => {
