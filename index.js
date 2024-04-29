@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.S3_BUCKET}:${process.env.SECRET_KEY}@cluster0.5cua0xk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
-
+const ObjectId = require('mongodb').ObjectId;
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -20,18 +20,6 @@ const client = new MongoClient(uri, {
   }
 });
 
-async function run() {
-  try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-}
 
 //form things- 
 async function run() {
@@ -50,18 +38,14 @@ async function run() {
 
         app.get('/touristspots/:id', async (req, res) => {
             const id = req.params.id;
-            const query = { _id: new ObjectId(id) }
+            console.log(id);
+            const query = { _id: new ObjectId(id)  }
             const result = await touristSpotsCollection.findOne(query);
             res.send(result);
+            console.log(result);
         })
-        // get detsils
-        // app.get('/touristspots/:id', async (req, res) => {
-        //   const { id } = req.params;
-        //   const spot = await touristSpotsCollection.findOne({ _id: id });
-        //   res.send(spot);
-        // });
-        
 
+        //add list
         app.post('/touristspots', async (req, res) => {
             const formData= req.body;
             console.log(formData);
@@ -69,7 +53,14 @@ async function run() {
             res.send(result);
         })
 
-
+        // delete
+           app.delete('/touristspots/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log("id");
+            const query = { _id: new ObjectId(id)}
+            const result = await touristSpotsCollection.deleteOne(query);
+            res.send(result);
+        })
 
         //show countries
         const countryCollection = client.db('test').collection('countries');
@@ -108,6 +99,8 @@ app.get('/', (req, res) =>{
 app.listen(port, ()=>{
     console.log(`Port:${port}`)
 })
+
+
     // app.put('/touristspots/:id', async (req, res) => {
         //     const id = req.params.id;
         //     const filter = { _id: new ObjectId(id) }
@@ -137,5 +130,13 @@ app.listen(port, ()=>{
         //     res.send(result);
         // })
 
+       //mylist
+//         app.get("/touristspots/:email", async (req, res) => {
+//           const email = req.params.email;
+//            const query = { user_email: email };
+//   const result = await touristSpotsCollection.find(query)
+//   res.send(result);
+//       });
+      
         // mongoimport --uri "mongodb+srv://Admin:Admin0202@cluster0.5cua0xk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0" --collection countries --file "C:/Users/NISHA/Downloads/countries.json" --jsonArray
         // C:/Users/NISHA/Downloads/countries.json
