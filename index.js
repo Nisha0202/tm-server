@@ -76,7 +76,7 @@ async function run() {
             const filter = { _id: new ObjectId(id) }
             const options = { upsert: true };
             const spots = req.body;
-
+console.log(spots)
             const data = {
                 $set: {
                     image_url: spots.image_url,
@@ -88,11 +88,10 @@ async function run() {
                     seasonality: spots.seasonality,
                     travel_time: spots.travel_time,
                     total_visitors_per_year: spots.total_visitors_per_year,
-                    user_name: spots.displayName, 
-                    user_email: spots.email,
+                    user_name: spots.user_name, 
+                    user_email: spots.user_email,
                 }
             }
-
             const result = await touristSpotsCollection.updateOne(filter, data, options);
             res.send(result);
         })
