@@ -71,31 +71,54 @@ async function run() {
             res.send(result);
         })
 
-        app.put('/touristspots/:id', async (req, res) => {
-            const id = req.params.id;
-            const filter = { _id: new ObjectId(id) }
-            const options = { upsert: true };
-            const spots = req.body;
-console.log(spots)
-            const data = {
-                $set: {
-                    image_url: spots.image_url,
-                    tourists_spot_name: spots.tourists_spot_name,
-                    country_name: spots.country_name,
-                    location: spots.location,
-                    short_description: spots.short_description,
-                    average_cost: spots.average_cost,
-                    seasonality: spots.seasonality,
-                    travel_time: spots.travel_time,
-                    total_visitors_per_year: spots.total_visitors_per_year,
-                    user_name: spots.user_name, 
-                    user_email: spots.user_email,
-                }
-            }
-            const result = await touristSpotsCollection.updateOne(filter, data, options);
-            res.send(result);
-        })
+//         app.put('/touristspots/:id', async (req, res) => {
+//             const id = req.params.id;
+//             const filter = { _id: new ObjectId(id) }
+//             const options = { upsert: true };
+//             const spots = req.body;
+// console.log(spots)
+//             const data = {
+//                 $set: {
+//                     image_url: spots.image_url,
+//                     tourists_spot_name: spots.tourists_spot_name,
+//                     country_name: spots.country_name,
+//                     location: spots.location,
+//                     short_description: spots.short_description,
+//                     average_cost: spots.average_cost,
+//                     seasonality: spots.seasonality,
+//                     travel_time: spots.travel_time,
+//                     total_visitors_per_year: spots.total_visitors_per_year,
+//                     user_name: spots.user_name, 
+//                     user_email: spots.user_email,
+//                 }
+//             }
+//             const result = await touristSpotsCollection.updateOne(filter, data, options);
+//             res.send(result);
+//         })
 
+app.put('/touristspots/:id', async (req, res) => {
+    const id = req.params.id;
+    const filter = { _id: new ObjectId(id) }
+    const options = { upsert: true };
+    const spots = req.body;
+    const data = {
+      $set: {
+        image_url: spots.image_url,
+        tourists_spot_name: spots.tourists_spot_name,
+        country_name: spots.country_name,
+        location: spots.location,
+        short_description: spots.short_description,
+        average_cost: spots.average_cost,
+        seasonality: spots.seasonality,
+        travel_time: spots.travel_time,
+        total_visitors_per_year: spots.total_visitors_per_year,
+        user_name: spots.user_name, 
+        user_email: spots.user_email,
+      }
+    }
+    const result = await touristSpotsCollection.updateOne(filter, data, options);
+    res.send({ matchedCount: result.matchedCount, modifiedCount: result.modifiedCount });
+  })
 
 
 
