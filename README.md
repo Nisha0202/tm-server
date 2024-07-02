@@ -11,12 +11,12 @@
 - **Persistent Login:** Users remain logged in even after reloading the page.
 
 ## Technologies Used
-1. Node.js: Server-side JavaScript runtime.
-2. Express.js: Web application framework for Node.js.
-3. MongoDB Atlas: Cloud-hosted MongoDB database.
-4. Firebase Authentication: Used for user authentication (signup, login with email, and Google login).
-5. dotenv: Module to load environment variables from a .env file.
-6. CORS: Middleware to enable Cross-Origin Resource Sharing.
+1. Node.js
+2. Express.js
+3. MongoDB Atlas
+4. Firebase Authentication
+5. dotenv
+6. CORS
 
 ## Cloning and Local Setup
 1. Clone the Repository : git clone https://github.com/Nisha0202/tm-server.git or download zip
